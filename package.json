@@ -11,7 +11,7 @@
     "test:coverage": "vitest --coverage",
     "lint": "eslint . --fix",
     "format": "prettier --write .",
-    "clean": "rimraf dist coverage"  
+    "clean": "rimraf dist coverage"
   },
   "keywords": [],
   "author": "Ahmed Mkacher <ahmed.mkacher@outlook.com> (http://github.com/ahmed-mkacher)",
@@ -21,8 +21,10 @@
     "@fastify/secure-session": "^8.1.1",
     "@fastify/swagger": "^9.4.2",
     "@nestjs/common": "^11.0.6",
+    "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.6",
     "@nestjs/platform-fastify": "^11.0.6",
+    "@nestjs/testing": "^11.0.7",
     "fastify": "^5.2.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"

@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing'
-import { AppModule } from '../../src/app/app.module'
-import { AppController } from '../../src/app/app.controller'
+import { AppModule } from '@/app/app.module'
+import { AppController } from '@/app/app.controller'
 import { describe, expect, it, beforeAll } from 'vitest'
 
 describe('AppController', () => {
