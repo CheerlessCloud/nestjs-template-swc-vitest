@@ -1,10 +1,8 @@
-  
-* text=auto eol=lf  
-*.ts text  
-*.js text  
-*.json text  
-*.md text  
+* text=auto eol=lf
+*.ts text
+*.js text
+*.json text
+*.md text
 
-package.json merge=ours  
-pnpm-lock.yaml merge=ours  
-
+package-lock.json merge=ours
+pnpm-lock.yaml merge=ours

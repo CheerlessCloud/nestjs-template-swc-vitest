@@ -1,4 +1,5 @@
 {
+  "$schema": "https://swc.rs/schema.json",
   "jsc": {
     "parser": {
       "syntax": "typescript",
@@ -7,12 +8,35 @@
     },
     "transform": {
       "legacyDecorator": true,
-      "decoratorMetadata": true
+      "decoratorMetadata": true,
+      "decoratorVersion": "2021-12"
     },
-    "target": "es2024",
-    "baseUrl": "./src"
+    "externalHelpers": true,
+    "target": "esnext",
+    "baseUrl": "./src",
+    "preserveAllComments": true,
+    "keepClassNames": true,
+    "experimental": {
+      "plugins": [
+        // TODO: replace with with native solution after it will be released resolveFully + outFileExtension
+        //       https://github.com/swc-project/swc/discussions/9016
+        //       https://github.com/swc-project/website/pull/278
+        [
+          "@swc/plugin-transform-imports",
+          {
+            "^(.*?)\\.ts(x)?$": {
+              "skipDefaultConversion": true,
+              "transform": "{{matches.[1]}}.js"
+            }
+          }
+        ]
+      ]
+    }
   },
   "module": {
-    "type": "commonjs"
-  }
+    "type": "nodenext",
+    "strictMode": true,
+    "preserveImportMeta": true
+  },
+  "sourceMaps": true
 }

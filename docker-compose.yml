@@ -1,0 +1,30 @@
+version: '2.3'
+
+services:
+  mongodb:
+    image: 'bitnami/mongodb:5.0'
+    network_mode: bridge
+    hostname: mongodb-devdocker
+    environment:
+      MONGODB_DATABASE: app-tests
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_REPLICA_SET_KEY: replicasetkeytest
+      MONGODB_REPLICA_SET_NAME: rs01
+      MONGODB_ROOT_USER: 'root'
+      MONGODB_ROOT_PASSWORD: 'vAtNgUtt4gT6d5'
+      MONGODB_USERNAME: 'admin'
+      MONGODB_PASSWORD: 'vAtNgUtt4gT6d5'
+      MONGODB_ADVERTISED_HOSTNAME: 'localhost'
+      MONGODB_ADVERTISE_IP: '127.0.0.1'
+      MONGODB_ADVERTISED_PORT_NUMBER: '${DEVDOCKER_MONGODB_PORT:-27017}'
+      MONGODB_PORT_NUMBER: '${DEVDOCKER_MONGODB_PORT:-27017}'
+    ports:
+      - '${DEVDOCKER_MONGODB_PORT:-27017}:${DEVDOCKER_MONGODB_PORT:-27017}'
+    cap_drop:
+      - NET_RAW
+    volumes:
+      - 'mongodb-data:/data/db'
+    restart: unless-stopped
+
+volumes:
+  mongodb-data:

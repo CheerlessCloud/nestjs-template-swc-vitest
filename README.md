@@ -1,42 +1,81 @@
-# NestJS Turbo Template
+# NestJS modern template with SWC, Vitest, Zod and MikroORM
 
 [![NestJS](https://img.shields.io/badge/NestJS-11.0.0-E0234E?logo=nestjs)](https://nestjs.com)
-[![Fastify](https://img.shields.io/badge/Fastify-4.28.3-000000?logo=fastify)](https://fastify.io)
-[![SWC](https://img.shields.io/badge/SWC-1.3.107-F5C400?logo=swc)](https://swc.rs)
+[![ExpressJS](https://img.shields.io/badge/ExpressJS-4.x-000000?logo=express)](https://expressjs.com)
+[![SWC](https://img.shields.io/badge/SWC-1.x-F5C400?logo=swc)](https://swc.rs)
 [![Vitest](https://img.shields.io/badge/Vitest-1.6.2-6E9F18?logo=vitest)](https://vitest.dev)
-[![pnpm](https://img.shields.io/badge/pnpm-8.x-F69220?logo=pnpm)](https://pnpm.io)
+[![pnpm](https://img.shields.io/badge/pnpm-9.x-F69220?logo=pnpm)](https://pnpm.io)
 
-**A speed-optimized NestJS template** for developers who hate waiting.
+**A speed-optimized NestJS template** with modern build stack.
 
-🌟 **Welcome!**
+Is up-to-date for beginning of 2025 and well tested with all dependencies and use-cases. To be honest, I had no time for maintain all dependencies updates, so PRs for update dependencies are welcome 😌
 
-This template is a **speed-obsessed NestJS foundation** for developers who prioritize performance and minimalism.
-It’s actively evolving to integrate best practices for Fastify, SWC, and Vitest – **your feedback and contributions are welcome!**
+## Tech Stack
 
-🚧 **Note**: While fully functional, this template is in **continuous refinement**.
-Expect occasional breaking changes as we optimize for speed and stability.
+- 🚀 **Node.js v22** with **native ES modules**
+- 🛠️ **NestJS v11** as the primary framework
+- 📦 **pnpm** for fast, disk-space efficient package management
+- ⚡ **SWC** - 20x faster than `tsc`
+- 🔍 **TypeScript v5.7** with strict mode
+- 📝 **ESLint & Prettier** for code quality
+- 🐶 **Husky** and **lint-staged** for linting on commit
+- 🧪 **Vitest** for lightning-fast testing, with integration & unit projects setup
+- 📝 **dotenv-flow** for environment variables
+- 🗄️ **MikroORM** with **MongoDB** driver and **@mikro-orm/nestjs** adapter
+- ✅ **Zod** for validation and **@anatine/zod-nestjs** for OpenAPI and Swagger support
+- 📚 **Swagger** for API documentation
+- 📝 **Winston** with custom configuration for advanced logging
+- 🐳 **Docker** multi-stage alpine image
+- 🪄 **.cursorrules** for Cursor IDE
 
-
-**Why use this?**
-- 🚀 Built for **raw performance** (Fastify + SWC).
-- 🧩 **Modular** – add only what you need.
-- 🤝 **Community-driven** improvements.
-
-👉 **Star the repo** to track updates, and **open issues** for suggestions!  
-
-## Features
-
-- 🚀 **Fastify** instead of Express (2x faster)
-- ⚡ **SWC** compiler (20x faster than `tsc`)
-- 🧪 **Vitest** for instant feedback testing
-- 🔒 Security baked-in (Helmet, CORS, env validation)
-- 📦 Zero bloat – only essential dependencies
-- 🛠️ Preconfigured: ESLint, Prettier, Swagger, Git hooks
-
-## Getting Started
+## Installation
 
 ```bash
-git clone https://github.com/your-username/nestjs-turbo-template.git
-cd nestjs-turbo-template
+# Clone the repository
+git clone https://github.com/CheerlessCloud/nestjs-template-swc-vitest.git $YOUR_PROJECT_NAME$
+cd $YOUR_PROJECT_NAME$
+
+# Cleanup git history
+rm -rf .git pnpm-lock.yaml
+git init
+
+# Init npm package
+npm init
+# fill all fields and confirm...
+
+# Install dependencies
 pnpm install
-pnpm start:dev  
+
+# Set up environment variables (tune for your needs)
+cp .env.example .env
+# Set up test environment variables (tune for your needs)
+cp .env.example .env.test
+
+# Up MongoDB container from docker-compose.yml
+docker compose up -d
+# or docker-compose up -d for legacy docker-compose executable
+
+# Start development server with watch mode
+pnpm start:dev
+```
+
+### Development Scripts
+
+```bash
+# Run tests
+pnpm test                # Run all tests
+pnpm test:unit           # Run unit tests
+pnpm test:integration    # Run integration tests
+pnpm test:watch          # Run tests in watch mode
+
+# Build
+pnpm build               # Production build
+
+# Linting
+pnpm lint               # Check code style
+pnpm lint:fix           # Fix code style
+pnpm lint:format        # Format code
+
+# Type checking
+pnpm types:check        # Check TypeScript types
+```

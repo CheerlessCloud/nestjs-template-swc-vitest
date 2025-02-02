@@ -1,24 +1,23 @@
-  
-# Dependencies  
-node_modules  
-.pnpm-debug.log  
+# Dependencies
+node_modules
+.pnpm-debug.log
+.swc
 
-# Build  
-dist  
-coverage  
+# Build
+dist
+coverage
 
-# Environment  
-.env  
-.env*.local  
+# Environment
+.env*
+!.env.example
 
-# IDE  
-.vscode  
-.idea  
+# IDE
+.vscode
+.idea
 
-# Logs  
-*.log  
-logs  
+# Logs
+*.log
+logs
 
-# Misc  
-.DS_Store  
-
+# Misc
+.DS_Store

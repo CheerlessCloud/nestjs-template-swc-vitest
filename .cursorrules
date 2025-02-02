@@ -1,0 +1,128 @@
+# ROLE
+
+You are assisting with a modern Node.js API service. Primary framework is NestJS. Here are the key technical requirements and guidelines to follow:
+
+## TECH STACK
+
+- Runtime: Node.js v22, native ES modules
+- Build tool: SWC with TypeScript preset, with plugin for Vitest
+- Type checking: TypeScript v5.7 with strict mode and allowImportingTsExtensions: true for native ES modules
+- Linting: ESLint with TypeScript preset, Prettier
+- Package manager: pnpm
+- Testing framework: Vitest
+- Framework: NestJS
+- Data validation: Zod and @anatine/zod-nestjs
+- ORM: MikroORM with MongoDB driver and @mikro-orm/nestjs adapter
+- Logging: Winston with custom configuration
+- Docker: multi-stage alpine image
+
+## ARCHITECTURE PRINCIPLES
+
+- Feature-based modularity with clear boundaries between features and layers
+- Clear separation of concerns
+- Following the SOLID principles
+- Consistent naming conventions
+- Hierarchical organization
+- Centralized configuration
+- Shared utilities separate from business logic
+
+## Framework guidelines
+
+- Use explicit decorators usage for any cases: `@Inject(SomeDependency) private readonly someDependency: SomeDependency`. Do not rely on automatic inference from reflection, because it will fail in this runtime!
+- Use `@Injectable` decorator for all services and providers.
+- Use `@InjectLogger` decorator for all logger injections. Explicitly add type `Logger` from `winston` package.
+- Use `@Entity` decorator for all entity classes of MikroORM, with explicit collection name. Create Custom Entity Repository for each entity and bound them with [EntityRepositoryType] property. Use `@Inject(MongoEntityManager)` for entity manager injections.
+- Separate business features by modules in `src/modules/[module]/**` directory. Entities and repositories should placed inside module directory, and must not be exported from module.
+- Place all NestJS application initialization logic in `AppConfigurator` class. It will be extended by TestAppConfigurator for testing in `test/context.ts`.
+- Use zod for validation of requests and definition of response DTOs in Swagger. Use `extendApi(z.object({...}));` for definition of zod schema with OpenAPI metadata, and after create DTO with `export class ResponseDTO extends createZodDto(DTOSchema) {}`. This DTO can be used as a type for @Api* decorators from `@nestjs/swagger`. Prefer to explicitly define all requests and responses DTOs in controllers. Use `@UsePipes(ZodValidationPipe)` decorator for enforce validation of requests.
+
+## TESTING
+
+The project uses Vitest for testing with a clear separation between unit and integration tests:
+
+Structure:
+
+- `src/**/*.test.ts` or `src/**/*.spec.ts` - Unit tests, co-located with source files. Focus on isolated functionality, mock external dependencies
+- `test/**/*.e2e-spec.ts` - Integration tests. Test API endpoints and service integrations. Mock external APIs and services, but use real database and other infrastructure.
+- `test/context.ts` - Integration tests context for setup and teardown NestJS application
+
+Example of running tests for specific file: `pnpm run test test/app/app.e2e-spec.ts`
+
+Guidelines:
+- Follow the Arrange-Act-Assert convention for tests.
+- Use `describe` and `it` for tests.
+- Use nested `describe` for group test suites/cases.
+- If one `it` block is greater than hundreds lines of code, extract it to nested `describe` block and multiple `it` blocks, also in the Arrange-Act-Assert.
+- Use `beforeAll`, `beforeEach`, `afterAll` and `afterEach` for setup and teardown context.
+- Name test variables clearly.
+  - Follow the convention: `inputX`, `mockX`, `actualX`, `expectedX`, etc.
+- Prioritize integration tests over unit tests. Use unit tests only for testing isolated functions with complex logic and small amount of dependencies.
+- In integration tests as much as possible use context from `test/context.ts` for setup and teardown NestJS application.
+- Prefer white-box testing over gray-box testing, try to avoid using of direct mocks for internal implementation details.
+
+## TypeScript General Guidelines
+
+### Basic Principles
+- Use English for all code comments and documentation.
+- Always add explicit extensions on import files, like `import { example } from './file.ts';` because it necessary for NodeJS native ES modules.
+- Always declare the type of each variable and function (parameters and return value).
+- Avoid using `any` with preference to real types, or `unknown` if it's not possible.
+- Create necessary types.
+
+### Nomenclature
+- Use `PascalCase` for classes.
+- Use `camelCase` for variables, functions, and methods.
+- Use `PascalCase` `camelCase` for file names, depends on theirs content.
+- Use `PascalCase` for directories.
+- Use `UPPERCASE` for environment variables.
+- Avoid magic numbers and define constants.
+- Start each function with a verb.
+- Use verbs for boolean variables. Example: `isLoading`, `hasError`, `canDelete`, etc.
+- Use complete words instead of abbreviations and correct spelling.
+  - Except for standard abbreviations like `API`, `URL`, etc.
+  - Except for well-known abbreviations:
+    - `i`, `j` for loops
+    - `err` for errors
+    - `ctx` for contexts
+    - `req`, `res`, `next` for middleware function parameters, etc.
+
+### Functions
+- In this context, what is understood as a function will also apply to a method.
+- Write short or mid-size functions with a single purpose.
+- Name functions with a verb and something else.
+  - If it returns a boolean, use `isX`, `hasX`, `canX`, etc.
+  - If it does some specific action, use `executeX`, `saveX`, etc.
+- Avoid nesting blocks by:
+  - Early checks and returns.
+  - Extraction to utility functions.
+- Use higher-order functions (`map`, `filter`, `reduce`, etc.) to avoid function nesting.
+- Use arrow functions only when it's necessary - for callbacks, for access of upper-level this, etc. Otherwise use named functions, as example for top-level procedures.
+- Use default parameter values instead of checking for `null` or `undefined`.
+- Reduce function parameters using RO-RO:
+  - Use an object to pass multiple parameters.
+  - Use an object to return results.
+- Declare necessary types for input arguments and output.
+- Use a single level of abstraction.
+
+### Data
+- Don't abuse primitive types; encapsulate data in composite types.
+- Avoid data validations in functions and use classes with internal validation.
+- Prefer immutability for data.
+  - Use `readonly` for data that doesn't change.
+  - Use `as const` for literals that don't change.
+
+### Classes
+- Follow SOLID principles.
+- Prefer composition over inheritance.
+- Declare interfaces to define contracts.
+
+### Exceptions
+- Use exceptions to handle errors you don't expect.
+- If you catch an exception, it should be to:
+  - Fix an expected problem.
+  - Add context.
+  - Otherwise, use a global handler.
+
+## MISCELLANEOUS
+
+- For commit message use Conventional Commits. I prefer to write more detailed title (but not more than 120 characters) and try to avoid using of description. Commit scope is not fixed and can be generated on the fly. Also, I prefer to make more atomic commits, and group changes by modules.
